@@ -4,26 +4,23 @@ This module defines a class to manage storage
 from the database for the hbnb clone
 """
 from models.base_model import BaseModel, Base
-from sqlalchemy import (create_engine)
-from sqlalchemy.orm import sessionmaker
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from sqlalchemy import (create_engine)
+from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
 
 classes = {
-    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-    'State': State, 'City': City, 'Amenity': Amenity,
-    'Review': Review
+    'State': State, 'City': City
 }
 
 
 class DBStorage:
+    """This class manages storage of hbnb models in a MySQL database"""
     __engine = None
     __session = None
 
@@ -39,7 +36,7 @@ class DBStorage:
                                              getenv("HBNB_MYSQL_DB"),
                                              pool_pre_ping=True))
 
-        if getenv("HBNB_ENV ") == 'test':
+        if getenv("HBNB_ENV") == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -51,15 +48,13 @@ class DBStorage:
             all_objetcs = self.__session.query(cls).all()
             for obj in all_objetcs:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                value = obj
-                dic_of_objects[key] = value
+                dic_of_objects[key] = obj
         elif cls is None:
             for cls in classes.values():
                 all_objetcs = self.__session.query(cls).all()
                 for obj in all_objetcs:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    value = obj
-                    dic_of_objects[key] = value
+                    dic_of_objects[key] = obj
         return dic_of_objects
 
     def new(self, obj):
