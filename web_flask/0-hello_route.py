@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+This module defines a simple Flask web application.
+"""
 from flask import Flask
 
 app = Flask(__name__)
@@ -6,6 +9,9 @@ app = Flask(__name__)
 
 @app.route("/", strict_slashes=False)
 def hello_hbnb():
+    """
+    This function is executed when the root URL ("/") is accessed.
+    """
     return "Hello HBNB!"
 
 
