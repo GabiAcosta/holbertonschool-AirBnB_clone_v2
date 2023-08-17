@@ -59,7 +59,7 @@
     display: none;
     list-style: none;
     padding: 24px 0 24px 30px;
-    scroll-behavior: auto;
+    overflow-y: auto;
     max-height: 300px;
 }
 
